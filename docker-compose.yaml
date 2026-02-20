@@ -1,0 +1,27 @@
+volumes:
+  pg_tputinder:
+
+services:
+  tputinder_db:
+    image: postgres:17
+    restart: always
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=tputinder_db
+    volumes:
+      - pg_tputinder:/var/lib/postgresql/data
+
+    ports:
+      - "127.0.0.1:5433:5432"
+
+  app:
+    restart: always
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - tputinder_db
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:postgresql://tputinder_db:5432/tputinder_db'
+      JAVA_OPTS: '-Xmx512m'
