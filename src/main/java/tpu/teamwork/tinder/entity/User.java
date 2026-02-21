@@ -6,7 +6,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
@@ -22,11 +22,14 @@ public class User {
     UUID id;
     String username;
     String password;
-    UUID questionnary;
+    @Column(name = "questionnary_id")
+    UUID questionnaryId;
     @CreationTimestamp
-    LocalDateTime createdAt;
+    @Column(name = "created_at")
+    ZonedDateTime createdAt;
     @UpdateTimestamp
-    LocalDateTime updatedAt;
+    @Column(name = "updated_at")
+    ZonedDateTime updatedAt;
     @Version
     Long version;
 

@@ -1,0 +1,74 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-questionnary
+      author: Dmitry Polonnikov
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: questionnaires
+      changes:
+        - createTable:
+            tableName: questionnaires
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: age
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: gender
+                  type: varchar(1)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: course
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: faculty
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dormitory
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image
+                  type: uuid
+                  constraints:
+                    nullable: true
+              - column:
+                  name: is_active
+                  type: bool
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: bigint
+                  constraints:
+                    nullable: false
