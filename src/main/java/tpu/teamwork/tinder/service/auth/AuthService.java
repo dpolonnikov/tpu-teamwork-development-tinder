@@ -1,11 +1,10 @@
 package tpu.teamwork.tinder.service.auth;
 
-import tpu.teamwork.tinder.dto.AuthRequestDTO;
-import tpu.teamwork.tinder.dto.AuthResponseDTO;
-import tpu.teamwork.tinder.dto.SignUpRequestDTO;
-import tpu.teamwork.tinder.dto.UserResponseDTO;
+import tpu.teamwork.tinder.dto.*;
+import tpu.teamwork.tinder.entity.User;
 
 public interface AuthService {
     AuthResponseDTO createAuthToken(AuthRequestDTO authRequestDTO);
-    UserResponseDTO createNewUser(SignUpRequestDTO signUpRequestDTO);
+    StatusResponseDTO requestToRegistration(SignUpRequestDTO signUpRequestDTO);
+    UserResponseDTO  confirmRegistration(String hash);
 }

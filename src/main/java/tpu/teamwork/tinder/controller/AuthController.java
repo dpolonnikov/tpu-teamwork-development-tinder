@@ -5,10 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import tpu.teamwork.tinder.dto.AuthRequestDTO;
-import tpu.teamwork.tinder.dto.AuthResponseDTO;
-import tpu.teamwork.tinder.dto.SignUpRequestDTO;
-import tpu.teamwork.tinder.dto.UserResponseDTO;
+import tpu.teamwork.tinder.dto.*;
 import tpu.teamwork.tinder.service.auth.AuthService;
 
 @RestController("api/v1/")
@@ -23,8 +20,13 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<UserResponseDTO> createNewUser(@RequestBody SignUpRequestDTO signUpRequestDTO) {
-        UserResponseDTO userResponseDTO = authService.createNewUser(signUpRequestDTO);
-        return ResponseEntity.ok(userResponseDTO);
+    public ResponseEntity<String> requestToRegistration(@RequestBody SignUpRequestDTO signUpRequestDTO) {
+        StatusResponseDTO statusResponseDTO = authService.requestToRegistration(signUpRequestDTO);
+        return ResponseEntity.status(statusResponseDTO.status()).body(statusResponseDTO.message());
+    }
+
+    @PostMapping("/confirm-registration")
+    public ResponseEntity<UserResponseDTO> confirmRegistration(@RequestBody String data) {
+        return ResponseEntity.ok(authService.confirmRegistration(data));
     }
 }

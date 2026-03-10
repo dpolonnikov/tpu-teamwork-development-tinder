@@ -10,8 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tpu.teamwork.tinder.dto.SignUpRequestDTO;
+import tpu.teamwork.tinder.dto.UserConfirmRequestDTO;
 import tpu.teamwork.tinder.dto.UserResponseDTO;
 import tpu.teamwork.tinder.entity.User;
+import tpu.teamwork.tinder.mapper.UserConfirmMapper;
 import tpu.teamwork.tinder.mapper.UserResponseMapper;
 import tpu.teamwork.tinder.repository.UserRepository;
 
@@ -26,6 +28,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final UserResponseMapper userResponseMapper;
+    private final UserConfirmMapper userConfirmMapper;
     private final PasswordEncoder passwordEncoder;
 
     public Optional<User> findByUsername(String username) {
@@ -46,11 +49,8 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public UserResponseDTO createNewUser(SignUpRequestDTO signUpRequestDTO) {
-        User user = new User();
-        user.setUsername(signUpRequestDTO.username());
-        user.setPassword(passwordEncoder.encode(signUpRequestDTO.password()));
-        user.setEmail(signUpRequestDTO.email());
+    public UserResponseDTO createNewUser(UserConfirmRequestDTO userDTO) {
+        User user = userConfirmMapper.toUserEntity(userDTO);
         user.setRoles(List.of(roleService.findByName("ROLE_USER")));
         User savedUser = userRepository.save(user);
         log.info("Сохранен пользователь с id `{}` ", savedUser.getId());
