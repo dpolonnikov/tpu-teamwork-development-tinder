@@ -10,4 +10,6 @@ public interface SwipeService {
      * @return true, если образовался мэтч (взаимный лайк)
      */
     boolean saveSwipe(UUID toUserId, Boolean isLike);
+
+    java.util.List<tpu.teamwork.tinder.dto.MatchResponseDTO> getCurrentUserMatches();
 }

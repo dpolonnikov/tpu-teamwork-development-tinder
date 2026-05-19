@@ -49,4 +49,11 @@ public class SwipeServiceImpl implements SwipeService {
 
         return false;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public java.util.List<tpu.teamwork.tinder.dto.MatchResponseDTO> getCurrentUserMatches() {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return swipeRepository.findMatchesByUserId(currentUser.getId());
+    }
 }
