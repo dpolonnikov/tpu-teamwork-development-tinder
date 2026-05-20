@@ -1,0 +1,60 @@
+databaseChangeLog:
+  - changeSet:
+      id: 10032026-create-swipe-table
+      author: bairov_erdem
+      changes:
+        - createTable:
+            tableName: swipes
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: from_user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: to_user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_like
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: swipes
+            baseColumnNames: from_user_id
+            constraintName: fk_swipes_from_user
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            baseTableName: swipes
+            baseColumnNames: to_user_id
+            constraintName: fk_swipes_to_user
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addUniqueConstraint:
+            tableName: swipes
+            columnNames: from_user_id, to_user_id
+            constraintName: unique_swipe
