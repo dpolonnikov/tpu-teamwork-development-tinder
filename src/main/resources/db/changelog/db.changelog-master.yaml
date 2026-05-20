@@ -11,4 +11,8 @@ databaseChangeLog:
   - include:
       file: changeset/21022026-create-user-table.yaml
       relativeToChangelogFile: true
-
+  - include:
+      file: db.changelog/changeset/10032026-create-swipe-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog/changeset/25032026-create-message-table.yaml

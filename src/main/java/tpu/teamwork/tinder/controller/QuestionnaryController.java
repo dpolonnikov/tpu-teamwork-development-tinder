@@ -1,4 +1,4 @@
-package tpu.teamwork.tinder.questionnaries;
+package tpu.teamwork.tinder.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import tpu.teamwork.tinder.dto.QuestionnaryDTO;
+import tpu.teamwork.tinder.service.QuestionnaryService;
 
 import java.util.UUID;
 
@@ -28,6 +30,16 @@ public class QuestionnaryController {
         return ResponseEntity.ok(questionnaryService.getFeed(pageable));
     }
 
+    @PostMapping("/feed")
+    public ResponseEntity<Page<QuestionnaryDTO>> getFeedFilter(
+            @RequestHeader(value = "X-User-Id", required = false) UUID userId,
+            @RequestBody(required = false) QuestionnaryDTO filterDTO,
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
+            Pageable pageable) {
+
+        return ResponseEntity.ok(questionnaryService.getFeedFilter(userId, filterDTO, pageable));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<QuestionnaryDTO> getById(@PathVariable UUID id) {
         return ResponseEntity.ok(questionnaryService.findById(id));
@@ -35,9 +47,9 @@ public class QuestionnaryController {
 
     @PostMapping
     public ResponseEntity<QuestionnaryDTO> create(
-            // @RequestHeader("X-User-Id") UUID userId,
+            @RequestHeader(value = "X-User-Id", required = false) UUID userId,
             @RequestBody QuestionnaryDTO questionnaryDTO) {
-        QuestionnaryDTO created = questionnaryService.create(null, questionnaryDTO);
+        QuestionnaryDTO created = questionnaryService.create(userId, questionnaryDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
